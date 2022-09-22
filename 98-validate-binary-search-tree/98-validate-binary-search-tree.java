@@ -26,11 +26,10 @@ class Solution {
         return true;
     }
     public void  helper(TreeNode node,List<Integer>ans){
-        if(node!=null){
+        if(node==null)return;
         helper(node.left,ans);
         ans.add(node.val);
         helper(node.right,ans);
-        }
-        return;
+        
     }
 }
