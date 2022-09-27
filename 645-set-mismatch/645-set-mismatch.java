@@ -2,11 +2,11 @@ class Solution {
     public int[] findErrorNums(int[] nums) {
      HashMap<Integer,Integer>map = new HashMap<>();
         int max = 0 ;
-        int min = (int)1e9;
+
         for(int i =0 ; i<nums.length; i++){
             map.put(nums[i], map.getOrDefault(nums[i],0)+1);
             max = Math.max(max ,nums[i]);
-            min = Math.min(min , nums[i]);
+          
         }
         int ans [] = new int[2];
         for(int i = 1; i<=max ;i++){
