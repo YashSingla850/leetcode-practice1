@@ -39,23 +39,49 @@ class Solution{
     // n: size of array
     // Function to find the trapped water between the blocks.
     static long trappingWater(int arr[], int n) { 
-        // Your code here
-       long maxLeft []  = new long[n];
-       long  maxRight []  = new long[n];
-        long maxl =arr[0] , maxr =arr[n-1] , sum =0;
-        maxLeft[0] = arr[0];
-        maxRight[n-1] = arr[n-1];
-        for(int i =1 ; i<n ;i++){
-            maxl = Math.max(arr[i], maxl);
-            maxLeft[i] = maxl;
-            maxr = Math.max(arr[n-1-i] , maxr);
-            maxRight[n-1-i] = maxr;
-        }
-        for(int i =0 ; i<n ; i++){
-            sum+=Math.min(maxLeft[i], maxRight[i]) -arr[i];
+        int left = 0 , right = n-1;
+        long sum = 0;
+        int leftmax =0;
+        int rightmax = 0;
+        while(left<right){
+        leftmax =  Math.max(leftmax , arr[left]);
+        rightmax =  Math.max(rightmax , arr[right]);
+        
+        if(leftmax<=rightmax){
+            sum+= leftmax-arr[left];
+            left++;
+        }else{
+            sum+=rightmax-arr[right];
+            right--;
+          }
         }
         return sum;
     } 
 }
 
 
+
+// class Solution{
+    
+//     // arr: input array
+//     // n: size of array
+//     // Function to find the trapped water between the blocks.
+//     static long trappingWater(int arr[], int n) { 
+//         // Your code here
+//       long maxLeft []  = new long[n];
+//       long  maxRight []  = new long[n];
+//         long maxl =arr[0] , maxr =arr[n-1] , sum =0;
+//         maxLeft[0] = arr[0];
+//         maxRight[n-1] = arr[n-1];
+//         for(int i =1 ; i<n ;i++){
+//             maxl = Math.max(arr[i], maxl);
+//             maxLeft[i] = maxl;
+//             maxr = Math.max(arr[n-1-i] , maxr);
+//             maxRight[n-1-i] = maxr;
+//         }
+//         for(int i =0 ; i<n ; i++){
+//             sum+=Math.min(maxLeft[i], maxRight[i]) -arr[i];
+//         }
+//         return sum;
+//     } 
+// }
