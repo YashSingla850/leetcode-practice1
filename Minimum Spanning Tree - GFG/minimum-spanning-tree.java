@@ -47,90 +47,168 @@ class DriverClass
 
 
 // User function Template for Java
-
 class disJointSet{
-    List<Integer>parent = new ArrayList<>();
     List<Integer>rank = new ArrayList<>();
-    public disJointSet(int n){
-    for(int i =0 ; i<n ; i++){
-        parent.add(i);
-        rank.add(0);
+    List<Integer>parent = new ArrayList<>();
+    disJointSet(int n){
+        for(int i =0  ; i<n ; i++){
+            rank.add(0);
+            parent.add(i);
+        }
     }
-  }
     public int findPar(int node){
         if(node==parent.get(node)){
             return node;
         }
-        int ulp  = findPar(parent.get(node));
-        parent.set(node , ulp);
+        int ulp = findPar(parent.get(node));
+        parent.set(node ,ulp);
         return parent.get(node);
     }
     public void unionRank(int u , int v){
-        int parU = findPar(u);
-        int parV = findPar(v);
-        if(parU==parV)return;
+        int parU = parent.get(u);
+        int parV = parent.get(v);
+        if(parU==parV)return ;
         
         if(rank.get(parU)<rank.get(parV)){
             parent.set(parU , parV);
-            
-        }else if(rank.get(parU)>rank.get(parV)){
+        }else if(rank.get(parV)<rank.get(parU)){
             parent.set(parV , parU);
-          
         }else{
             parent.set(parV , parU);
-             int rankU = rank.get(parU);
-             rank.set(parU , rankU+1);
+            int rankU = rank.get(parU);
+            rank.set(parU , rankU+1);
         }
     }
 }
-
-class Edge implements Comparable<Edge>{
-    int src ,dest , weight;
-    Edge(int src, int dest , int weight){
+class edge implements Comparable<edge>{
+    int src ,dest ,wt;
+    edge(int src , int dest , int wt){
         this.src = src ;
-        this.dest = dest;
-        this.weight = weight;
+        this .dest = dest;
+        this.wt = wt;
     }
-    public int compareTo(Edge compareEdge){
-        return this.weight - compareEdge.weight;
+    public int compareTo(edge compareEdge){
+        return this.wt - compareEdge.wt;
     }
 }
+
 class Solution
 {
     //Function to find sum of weights of edges of the Minimum Spanning Tree.
     static int spanningTree(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj) 
     {
-        // Add your code here
-        List<Edge>edges = new ArrayList<>();
-        for(int i =0 ; i<V; i++){
+        // Add your code her
+        List<edge>list = new ArrayList<>();
+        for(int i = 0 ; i<V ; i++){
             for(int j =0 ; j<adj.get(i).size();j++){
-                int v = adj.get(i).get(j).get(0);
-                int wt = adj.get(i).get(j).get(1);
-                int node = i;
-                Edge temp = new Edge(node, v , wt);
-                edges.add(temp);
-                
+                int v= adj.get(i).get(j).get(0);
+                int wt= adj.get(i).get(j).get(1);
+                list.add(new edge(i , v ,wt));
             }
         }
-        disJointSet ds = new disJointSet(V);
-        Collections.sort(edges);
-        int sum =0;
-        for(int i =0 ; i<edges.size();i++){
-            int u = edges.get(i).src;
-            int v = edges.get(i).dest;
-            int wt = edges.get(i).weight;
-            
-            if(ds.findPar(u)!=ds.findPar(v)){
-                sum+=wt;
-                ds.unionRank(u , v);
-            }
-            
-        }
-        return sum;
+       disJointSet ds = new disJointSet(V);
+       int sum = 0;
+       Collections.sort(list);
+       for(int i =0 ; i<list.size();i++){
+           int src = list.get(i).src;
+           int dest = list.get(i).dest;
+           int wt = list.get(i).wt;
+           if(ds.findPar(src)!=ds.findPar(dest)){
+               sum+=wt;
+               ds.unionRank(src , dest);
+           }
+       }
+       return sum;
     }
 }
 
-// 
+//  BY DISJOINTSET UNION -: 
+
+
+// class disJointSet{
+//     List<Integer>parent = new ArrayList<>();
+//     List<Integer>rank = new ArrayList<>();
+//     public disJointSet(int n){
+//     for(int i =0 ; i<n ; i++){
+//         parent.add(i);
+//         rank.add(0);
+//     }
+//   }
+//     public int findPar(int node){
+//         if(node==parent.get(node)){
+//             return node;
+//         }
+//         int ulp  = findPar(parent.get(node));
+//         parent.set(node , ulp);
+//         return parent.get(node);
+//     }
+//     public void unionRank(int u , int v){
+//         int parU = findPar(u);
+//         int parV = findPar(v);
+//         if(parU==parV)return;
+        
+//         if(rank.get(parU)<rank.get(parV)){
+//             parent.set(parU , parV);
+            
+//         }else if(rank.get(parU)>rank.get(parV)){
+//             parent.set(parV , parU);
+          
+//         }else{
+//             parent.set(parV , parU);
+//              int rankU = rank.get(parU);
+//              rank.set(parU , rankU+1);
+//         }
+//     }
+// }
+
+// class Edge implements Comparable<Edge>{
+//     int src ,dest , weight;
+//     Edge(int src, int dest , int weight){
+//         this.src = src ;
+//         this.dest = dest;
+//         this.weight = weight;
+//     }
+//     public int compareTo(Edge compareEdge){
+//         return this.weight - compareEdge.weight;
+//     }
+// }
+// class Solution
+// {
+//     //Function to find sum of weights of edges of the Minimum Spanning Tree.
+//     static int spanningTree(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj) 
+//     {
+//         // Add your code here
+//         List<Edge>edges = new ArrayList<>();
+//         for(int i =0 ; i<V; i++){
+//             for(int j =0 ; j<adj.get(i).size();j++){
+//                 int v = adj.get(i).get(j).get(0);
+//                 int wt = adj.get(i).get(j).get(1);
+//                 int node = i;
+//                 Edge temp = new Edge(node, v , wt);
+//                 edges.add(temp);
+                
+//             }
+//         }
+//         disJointSet ds = new disJointSet(V);
+//         Collections.sort(edges);
+//         int sum =0;
+//         for(int i =0 ; i<edges.size();i++){
+//             int u = edges.get(i).src;
+//             int v = edges.get(i).dest;
+//             int wt = edges.get(i).weight;
+            
+//             if(ds.findPar(u)!=ds.findPar(v)){
+//                 sum+=wt;
+//                 ds.unionRank(u , v);
+//             }
+            
+//         }
+//         return sum;
+//     }
+// }
+
+//  BY PRIMS ALGORITHIM  -: 
+
 // class pair{
 //     int node ,distance ;
 //     pair(int node , int distance){
