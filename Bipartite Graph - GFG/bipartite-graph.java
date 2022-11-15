@@ -34,52 +34,112 @@ class GFG
 }
 // } Driver Code Ends
 
-
-class Solution
-{
-    class pair{
-        int v;
-        int color;
-        pair(int v , int color){
-            this.v  = v;
-            this.color  = color;
-        }
-    }
-    public boolean isBipartite(int V, ArrayList<ArrayList<Integer>>adj)
-    {
-        // Code here
-        int visited[] = new int[V];
-       for(int i =0 ; i<V ;i++){
-           if(visited[i]==0){
-               boolean ans = helper(adj , visited , i);
-               if(ans==false){
-                   return false;
-               }
-           }
-       }
-       return true;
-    }
-    
-    public boolean helper(ArrayList<ArrayList<Integer>> list , int[]visited , int i){
-       Queue<pair>q = new ArrayDeque<>();
-       q.add(new pair(i,1));
-       while(q.size()>0){
-           pair temp = q.remove();
-           if(visited[temp.v]!=0){
-               int oc = visited[temp.v];
-               int nc = temp.color;
-               if(oc==nc){
-                   continue;
-               }
-               return false;
-           }
-           visited[temp.v]=temp.color;
-           for(int nbr : list.get(temp.v)){
-               if(visited[nbr]==0){
-                   q.add(new pair(nbr , temp.color*-1));
-               }
-           }
-       }
-       return true;
+class pair{
+    int v , color;
+    pair(int v ,int color){
+        this.v = v;
+        this.color = color;
     }
 }
+class Solution
+{
+    public boolean isBipartite(int v, ArrayList<ArrayList<Integer>>adj)
+    {
+        // Code here
+        int[]vis = new int[v];
+        for(int i =0 ; i<v ; i++){
+            if(vis[i]==0){
+                boolean ans = helper(adj , vis , i);
+                if(ans ==false)return false;
+            }
+        }
+        return true;
+    }
+    public boolean helper(ArrayList<ArrayList<Integer>>list , int[]vis , int node){
+        ArrayDeque<pair>q = new ArrayDeque<>();
+        q.add(new pair(node , 1));
+        while(q.size()>0){
+            pair temp = q.remove();
+            int src = temp.v;
+            int ocolor = temp.color;
+            if(vis[src]!=0){
+                if(vis[src]==ocolor){
+                    continue;
+                }else{
+                return false;
+                }
+            }
+            vis[src] = ocolor;
+            for(int nbr: list.get(src)){
+                if(vis[nbr]==0){
+                    q.add(new pair(nbr,ocolor*-1));
+                }
+            }
+        }
+        return true;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// class Solution
+// {
+//     class pair{
+//         int v;
+//         int color;
+//         pair(int v , int color){
+//             this.v  = v;
+//             this.color  = color;
+//         }
+//     }
+//     public boolean isBipartite(int V, ArrayList<ArrayList<Integer>>adj)
+//     {
+//         // Code here
+//         int visited[] = new int[V];
+//       for(int i =0 ; i<V ;i++){
+//           if(visited[i]==0){
+//               boolean ans = helper(adj , visited , i);
+//               if(ans==false){
+//                   return false;
+//               }
+//           }
+//       }
+//       return true;
+//     }
+    
+//     public boolean helper(ArrayList<ArrayList<Integer>> list , int[]visited , int i){
+//       Queue<pair>q = new ArrayDeque<>();
+//       q.add(new pair(i,1));
+//       while(q.size()>0){
+//           pair temp = q.remove();
+//           if(visited[temp.v]!=0){
+//               int oc = visited[temp.v];
+//               int nc = temp.color;
+//               if(oc==nc){
+//                   continue;
+//               }
+//               return false;
+//           }
+//           visited[temp.v]=temp.color;
+//           for(int nbr : list.get(temp.v)){
+//               if(visited[nbr]==0){
+//                   q.add(new pair(nbr , temp.color*-1));
+//               }
+//           }
+//       }
+//       return true;
+//     }
+// }
